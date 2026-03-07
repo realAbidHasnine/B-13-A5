@@ -18,7 +18,7 @@
 <body>
 
     <header>
-        <nav class="flex justify-between items-center p-4 shadow-md">
+        <nav class="flex justify-between items-center p-4 border-b border-gray-800">
             <div class="flex items-center gap-2">
                 <img class="w-10 h-10" src="assets/github-logo.png" alt="">
                 <p class="text-2xl font-bold">GitHub Issues Tracker</p>
@@ -33,7 +33,23 @@
     </header>
 
 
+    <main>
+        <section class="flex gap-5 w-[80%] bg-white mt-10 mx-auto border border-gray-800 py-5 px-3 rounded-md">
+            <button id="all-button" class="btn btn-primary px-8 text-center">All</button>
+            <button id="open-button" class="btn px-8">Open</button>
+            <button id="closed-button" class="btn px-8">Closed</button>
+        </section>
 
+        <section id="issue-container" class="grid grid-cols-4 space-x-3 space-y-2">
+
+        </section>
+
+
+
+    </main>
+
+
+    <script src="script/home.js"></script>
 </body>
 
 </html>
