@@ -46,6 +46,7 @@ const createElements = (arr) => {
 // "createdAt": "2024-01-15T10:30:00Z",
 // "updatedAt": "2024-01-15T10:30:00Z"
 
+//date formatter
 const formatDate = (isoString) => {
   const date = new Date(isoString);
   return date.toLocaleDateString("en-US", {
@@ -62,6 +63,8 @@ const priorityColor = {
   low: "bg-green-100 text-green-800",
 };
 
+
+//basic display issues
 const displayIssues = (issues) => {
   const issueContainer = document.getElementById("issue-container");
   issueContainer.innerHTML = "";
@@ -114,6 +117,17 @@ document.getElementById("open-btn").addEventListener("click", () => {
     .then((json) => {
       const openIssues = json.data.filter(issue => issue.status === "open");
       displayIssues(openIssues);
+    });
+});
+
+//close button
+document.getElementById("close-btn").addEventListener("click", () => {
+  const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+  fetch(url)
+    .then((res) => res.json())
+    .then((json) => {
+      const closedIssues = json.data.filter(issue => issue.status === "closed");
+      displayIssues(closedIssues);
     });
 });
 
