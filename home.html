@@ -35,12 +35,31 @@
 
     <main>
         <section class="flex gap-5 w-[80%] bg-white mt-10 mx-auto border border-gray-800 py-5 px-3 rounded-md">
-            <button id="all-button" class="btn btn-primary px-8 text-center">All</button>
-            <button id="open-button" class="btn px-8">Open</button>
-            <button id="closed-button" class="btn px-8">Closed</button>
+            <button id="all-btn" class="btn btn-primary px-8 text-center">All</button>
+            <button id="open-btn" class="btn px-8">Open</button>
+            <button id="closed-btn" class="btn px-8">Closed</button>
         </section>
 
-        <section id="issue-container" class="grid grid-cols-4 my-4 py-3 gap-3">
+        <section
+            class="flex items-center justify-between w-[80%] border border-gray-800 mt-5 mb-3 mx-auto shadow-sm py-5 px-3 rounded-md">
+
+            <div class="flex items-center gap-3">
+                <img src="assets/Aperture.png" alt="Aperture" class="w-10 h-10">
+                <div>
+                    <span id="issue-count" class="font-medium text-2xl">50</span>
+                    <span class="font-medium text-2xl">Issues</span>
+                    <p class="text-gray-600">Track and manage your project issues</p>
+                </div>
+            </div>
+
+            
+            <div class="flex items-center gap-2">
+                icons
+                
+            </div>
+        </section>
+
+        <section id="issue-container" class="grid grid-cols-4 mx-4 py-3 gap-3">
 
         </section>
 

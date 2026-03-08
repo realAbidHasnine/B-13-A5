@@ -69,9 +69,14 @@ const displayIssues = (issues) => {
   issues.forEach((issue) => {
     const card = document.createElement("div");
     card.innerHTML = `
-     <div class="bg-white rounded-xl flex flex-col p-5 border border-gray-200 space-y-3">
+     <div class="bg-white rounded-xl flex flex-col p-5 border border-gray-200 space-y-3 h-full">
         
-        <div>
+        <div class="flex items-center justify-between">
+          <img 
+            src="${issue.status === "closed" ? "assets/Closed-Status.png" : "assets/Open-Status.png"}" 
+            alt="" 
+            class="w-7 h-7"
+          />
           <span class="inline-flex items-center px-2 py-1 rounded text-xs font-semibold uppercase ${priorityColor[issue.priority] || "bg-gray-100 text-gray-800"}">
             ${issue.priority}
           </span>
@@ -87,12 +92,30 @@ const displayIssues = (issues) => {
           <div>#${issue.id} by ${issue.author}</div>
           <div>${formatDate(issue.createdAt)}</div>
         </div>
-        
+
       </div>
     `;
 
     issueContainer.append(card);
   });
 };
+
+
+//all button
+document.getElementById("all-btn").addEventListener("click",()=>{
+  loadIssue();
+});
+
+//open button
+document.getElementById("open-btn").addEventListener("click", () => {
+  const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+  fetch(url)
+    .then((res) => res.json())
+    .then((json) => {
+      const openIssues = json.data.filter(issue => issue.status === "open");
+      displayIssues(openIssues);
+    });
+});
+
 
 loadIssue();
