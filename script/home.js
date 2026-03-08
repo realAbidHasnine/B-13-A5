@@ -5,6 +5,33 @@ const loadIssue = () => {
     .then((json) => displayIssues(json.data));
 };
 
+const createElements = (arr) => {
+  const labelConfig = {
+    bug: {
+      icon: '<i class="fa-solid fa-bug mr-1"></i>',
+      bg: "bg-red-100 text-red-800",
+    },
+    "help wanted": {
+      icon: '<i class="fa-solid fa-life-ring mr-1"></i>',
+      bg: "bg-yellow-100 text-yellow-800",
+    },
+    enhancement: {
+      icon: '<i class="fa-regular fa-star mr-1"></i>',
+      bg: "bg-green-100 text-green-800",
+    },
+  };
+
+  const htmlElements = arr.map((label) => {
+    const config = labelConfig[label] || {
+      icon: "",
+      bg: "bg-gray-100 text-gray-800",
+    };
+    return `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${config.bg} mr-2">${config.icon}${label.toUpperCase()}</span>`;
+  });
+
+  return htmlElements.join(" ");
+};
+
 // "id": 1,
 // "title": "Fix navigation menu on mobile devices",
 // "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
@@ -19,6 +46,22 @@ const loadIssue = () => {
 // "createdAt": "2024-01-15T10:30:00Z",
 // "updatedAt": "2024-01-15T10:30:00Z"
 
+const formatDate = (isoString) => {
+  const date = new Date(isoString);
+  return date.toLocaleDateString("en-US", {
+    month: "numeric",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+// Priority badge colour mapping
+const priorityColor = {
+  high: "bg-red-100 text-red-800",
+  medium: "bg-yellow-100 text-yellow-800",
+  low: "bg-green-100 text-green-800",
+};
+
 const displayIssues = (issues) => {
   const issueContainer = document.getElementById("issue-container");
   issueContainer.innerHTML = "";
@@ -26,19 +69,25 @@ const displayIssues = (issues) => {
   issues.forEach((issue) => {
     const card = document.createElement("div");
     card.innerHTML = `
-      <div class="bg-white rounded-xl flex flex-col text-center py-10 px-5 space-y-4 border border-gray-200">
-        <h2 class="font-bold text-xl">${issue.title}</h2>
-        <p class="text-gray-600 text-sm">${issue.description}</p>
-        <div class="mt-3 flex justify-between">
-            <div>
-            <p class="text-[#64748B]"><small> ${issue.id} by ${issue.author} </small></p>
-            <p class="text-[#64748B]"><small> 1/15/2025 </small></p> 
-            </div>
-            <div>
-            <p class="text-[#64748B]"> <small> ${issue.createdAt} </small> </p>
-            <p class="text-[#64748B]"> <small> ${issue.updatedAt} </small> </p>
-            </div> 
+     <div class="bg-white rounded-xl flex flex-col p-5 border border-gray-200 space-y-3">
+        
+        <div>
+          <span class="inline-flex items-center px-2 py-1 rounded text-xs font-semibold uppercase ${priorityColor[issue.priority] || "bg-gray-100 text-gray-800"}">
+            ${issue.priority}
+          </span>
         </div>
+        
+        <h2 class="font-bold text-lg">${issue.title}</h2>
+        
+        <p class="text-gray-600 text-sm line-clamp-2">${issue.description}</p>
+        
+        <div class="flex flex-wrap gap-2">${createElements(issue.labels)}</div>
+        
+        <div class="text-xs text-gray-500 pt-2 border-t border-gray-100">
+          <div>#${issue.id} by ${issue.author}</div>
+          <div>${formatDate(issue.createdAt)}</div>
+        </div>
+        
       </div>
     `;
 
