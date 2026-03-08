@@ -63,7 +63,6 @@ const priorityColor = {
   low: "bg-green-100 text-green-800",
 };
 
-
 //basic display issues
 const displayIssues = (issues) => {
   const issueContainer = document.getElementById("issue-container");
@@ -71,6 +70,8 @@ const displayIssues = (issues) => {
 
   issues.forEach((issue) => {
     const card = document.createElement("div");
+    card.className = "cursor-pointer";
+    card.addEventListener("click", () => loadIssueDetails(issue.id));
     card.innerHTML = `
      <div class="bg-white rounded-xl flex flex-col p-5 border border-gray-200 space-y-3 h-full">
         
@@ -103,33 +104,144 @@ const displayIssues = (issues) => {
   });
 };
 
-
 //all button
-document.getElementById("all-btn").addEventListener("click",()=>{
+document.getElementById("all-btn").addEventListener("click", () => {
   loadIssue();
 });
 
 //open button
-document.getElementById("open-btn").addEventListener("click", () => {
+const openBtn = document.getElementById("open-btn");
+openBtn.addEventListener("click", () => {
   const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
-      const openIssues = json.data.filter(issue => issue.status === "open");
+      const openIssues = json.data.filter((issue) => issue.status === "open");
       displayIssues(openIssues);
     });
+  document.getElementById("all-btn").classList.remove("btn-primary");
+  document.getElementById("close-btn").classList.remove("btn-primary");
 });
+openBtn.classList.add("btn-primary");
 
 //close button
-document.getElementById("close-btn").addEventListener("click", () => {
+const closeBtn = document.getElementById("close-btn");
+closeBtn.addEventListener("click", () => {
   const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
-      const closedIssues = json.data.filter(issue => issue.status === "closed");
+      const closedIssues = json.data.filter(
+        (issue) => issue.status === "closed",
+      );
       displayIssues(closedIssues);
     });
+  document.getElementById("all-btn").classList.remove("btn-primary");
+  document.getElementById("open-btn").classList.remove("btn-primary");
 });
+closeBtn.classList.add("btn-primary");
 
+
+//example
+// {
+// "status": "success",
+// "message": "Issue fetched successfully",
+// "data": {
+// "id": 33,
+// "title": "Add bulk operations support",
+// "description": "Allow users to perform bulk actions like delete, update status on multiple items at once.",
+// "status": "open",
+// "labels": [
+// "enhancement"
+// ],
+// "priority": "low",
+// "author": "bulk_barry",
+// "assignee": "",
+// "createdAt": "2024-02-02T10:00:00Z",
+// "updatedAt": "2024-02-02T10:00:00Z"
+// }
+// }
+
+
+const loadIssueDetails = async (id) => {
+
+  const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayIssueDetails(data.data);
+};
+
+const displayIssueDetails = (issue) => {
+
+  const detailsBox = document.getElementById("details-container");
+
+  //stolen from createElements function
+  const labelConfig = {
+    bug: {
+      icon: '<i class="fa-solid fa-bug mr-1"></i>',
+      bg: "bg-red-100 text-red-800",
+    },
+    "help wanted": {
+      icon: '<i class="fa-solid fa-life-ring mr-1"></i>',
+      bg: "bg-yellow-100 text-yellow-800",
+    },
+    enhancement: {
+      icon: '<i class="fa-regular fa-star mr-1"></i>',
+      bg: "bg-green-100 text-green-800",
+    },
+  };
+  
+  const renderLabels = (labels) => {
+    if (!labels || labels.length === 0) {
+      return '<p class="text-gray-500">No labels</p>';
+    }
+    return labels
+      .map((label) => {
+        const config = labelConfig[label] || {
+          icon: "",
+          bg: "bg-gray-100 text-gray-800",
+        };
+        return `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${config.bg} mr-2">${config.icon}${label.toUpperCase()}</span>`;
+      })
+      .join("");
+  };
+
+  
+  const statusBadgeClass =
+    issue.status === "open" ? "badge-success" : "badge-error";
+
+  detailsBox.innerHTML = `
+    <div class="text-2xl font-bold mb-2">
+      ${issue.title}
+    </div>
+
+    <div class="flex items-center gap-2 text-sm text-gray-600 mb-4">
+      <span class="badge ${statusBadgeClass}">${issue.status}</span>
+      <span>
+        Opened by ${issue.author} •
+        ${formatDate(issue.createdAt)}
+      </span>
+    </div>
+
+    <p class="mb-4">${issue.description}</p>
+
+    <div class="mb-4">
+      ${renderLabels(issue.labels)}
+    </div>
+
+    <div class="mb-2">
+      <span class="font-bold">Assign :</span>
+      ${issue.assignee}
+    </div>
+
+    <div class="mb-4">
+      <span class="font-bold">Priority</span>
+      ${issue.priority}
+    </div>
+  `;
+
+  // Show the modal
+  document.getElementById("my_modal_5").showModal();
+};
 
 loadIssue();
