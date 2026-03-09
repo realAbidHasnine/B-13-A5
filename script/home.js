@@ -4,6 +4,8 @@ const loadIssue = () => {
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
+      const allIssues = json.data.filter((issue) => issue.status === "open" || issue.status === "closed");
+      issueCount.innerHTML = allIssues.length;
       displayIssues(json.data);
       manageSpinner(false);
     })
@@ -132,6 +134,7 @@ openBtn.addEventListener("click", () => {
     .then((res) => res.json())
     .then((json) => {
       const openIssues = json.data.filter((issue) => issue.status === "open");
+      issueCount.innerHTML = openIssues.length; 
       displayIssues(openIssues);
       manageSpinner(false);
     })
@@ -149,9 +152,8 @@ closeBtn.addEventListener("click", () => {
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
-      const closedIssues = json.data.filter(
-        (issue) => issue.status === "closed",
-      );
+      const closedIssues = json.data.filter((issue) => issue.status === "closed");
+      issueCount.innerHTML = closedIssues.length;
       displayIssues(closedIssues);
       manageSpinner(false);
     })
