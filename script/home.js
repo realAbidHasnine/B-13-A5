@@ -274,3 +274,19 @@ const manageSpinner = (status) => {
 };
 
 loadIssue();
+
+document.getElementById("btn-search").addEventListener("click", () => {
+  const input = document.getElementById("input-search");
+  const searchValue = input.value.trim().toLowerCase();
+
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues`)
+    .then((res) => res.json())
+    .then((data) => {
+      const allWords = data.data;
+      const filterWords = allWords.filter((issue) =>
+        issue.title.toLowerCase().includes(searchValue)
+      );
+
+      displayIssues(filterWords);
+    });
+});
