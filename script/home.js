@@ -1,3 +1,4 @@
+//issue container popolation
 const loadIssue = () => {
   manageSpinner(true);
   const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
@@ -14,6 +15,7 @@ const loadIssue = () => {
     .catch(() => manageSpinner(false));
 };
 
+//label element creator
 const createElements = (arr) => {
   const labelConfig = {
     bug: {
@@ -40,20 +42,6 @@ const createElements = (arr) => {
 
   return htmlElements.join(" ");
 };
-
-// "id": 1,
-// "title": "Fix navigation menu on mobile devices",
-// "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
-// "status": "open",
-// "labels": [
-// "bug",
-// "help wanted"
-// ],
-// "priority": "high",
-// "author": "john_doe",
-// "assignee": "jane_smith",
-// "createdAt": "2024-01-15T10:30:00Z",
-// "updatedAt": "2024-01-15T10:30:00Z"
 
 //date formatter
 const formatDate = (isoString) => {
@@ -116,10 +104,6 @@ const displayIssues = (issues) => {
 };
 
 //all button
-// document.getElementById("all-btn").addEventListener("click", () => {
-//   loadIssue();
-// });
-
 const allBtn = document.getElementById("all-btn");
 allBtn.addEventListener("click", () => {
   loadIssue();
@@ -169,26 +153,7 @@ closeBtn.addEventListener("click", () => {
   closeBtn.classList.add("btn-primary");
 });
 
-//example
-// {
-// "status": "success",
-// "message": "Issue fetched successfully",
-// "data": {
-// "id": 33,
-// "title": "Add bulk operations support",
-// "description": "Allow users to perform bulk actions like delete, update status on multiple items at once.",
-// "status": "open",
-// "labels": [
-// "enhancement"
-// ],
-// "priority": "low",
-// "author": "bulk_barry",
-// "assignee": "",
-// "createdAt": "2024-02-02T10:00:00Z",
-// "updatedAt": "2024-02-02T10:00:00Z"
-// }
-// }
-
+//modal details
 const loadIssueDetails = async (id) => {
   manageSpinner(true);
   const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
@@ -198,6 +163,8 @@ const loadIssueDetails = async (id) => {
   manageSpinner(false);
 };
 
+
+//modal details
 const displayIssueDetails = (issue) => {
   const detailsBox = document.getElementById("details-container");
 
@@ -269,6 +236,8 @@ const displayIssueDetails = (issue) => {
   document.getElementById("my_modal_5").showModal();
 };
 
+
+//spinner management
 const manageSpinner = (status) => {
   if (status == true) {
     document.getElementById("spinner").classList.remove("hidden");
@@ -281,6 +250,8 @@ const manageSpinner = (status) => {
 
 loadIssue();
 
+
+//search btn functionality
 document.getElementById("btn-search").addEventListener("click", () => {
   const input = document.getElementById("input-search");
   const searchValue = input.value.trim().toLowerCase();

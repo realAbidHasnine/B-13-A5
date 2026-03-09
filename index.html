@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
     <title>GitHub Issue tracker</title>
 </head>
+
 <body>
     <div class="flex min-h-screen items-center justify-center" id="">
 
@@ -25,15 +27,25 @@
             <legend class="fieldset-legend"></legend>
 
             <label class="label">Username</label>
-            <input id="usernameInput" type="text" class="input" placeholder="use : admin"/>
+            <input id="usernameInput" type="text" class="input" placeholder="" />
 
             <label class="label">Password</label>
-            <input id="userPassword" type="password" class="input" placeholder="use : admin123"/>
+            <input id="userPassword" type="password" class="input" placeholder="" />
 
             <button id="login-btn" class="btn btn-primary mt-4">Login</button>
+            <div class="flex justify-center items-center gap-4 w-full mt-4">
+                <hr class="flex-grow border-gray-400">
+                
+            </div>
+            
+            <div class="text-center py-[10PX]  rounded-[5px]">
+                <p><span class="font-bold">Username:</span> admin</p>
+                <p><span class="font-bold">Password:</span> admin123</p>
+            </div>
         </fieldset>
     </div>
 
     <script src="script/login.js"></script>
 </body>
+
 </html>
