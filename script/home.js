@@ -4,7 +4,9 @@ const loadIssue = () => {
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
-      const allIssues = json.data.filter((issue) => issue.status === "open" || issue.status === "closed");
+      const allIssues = json.data.filter(
+        (issue) => issue.status === "open" || issue.status === "closed",
+      );
       issueCount.innerHTML = allIssues.length;
       displayIssues(json.data);
       manageSpinner(false);
@@ -78,9 +80,12 @@ const displayIssues = (issues) => {
   issues.forEach((issue) => {
     const card = document.createElement("div");
     card.className = "cursor-pointer";
+
+    let borderColor = issue.status === "closed" ? "border-t-4 border-purple-500" : "border-t-4 border-green-500";
+
     card.addEventListener("click", () => loadIssueDetails(issue.id));
     card.innerHTML = `
-     <div class="bg-white rounded-xl flex flex-col p-5 border border-gray-200 space-y-3 h-full">
+     <div class="bg-white rounded-xl flex flex-col p-5 border border-gray-200 space-y-3 h-full ${borderColor}">
         
         <div class="flex items-center justify-between">
           <img 
@@ -106,7 +111,6 @@ const displayIssues = (issues) => {
 
       </div>
     `;
-
     issueContainer.append(card);
   });
 };
@@ -134,7 +138,7 @@ openBtn.addEventListener("click", () => {
     .then((res) => res.json())
     .then((json) => {
       const openIssues = json.data.filter((issue) => issue.status === "open");
-      issueCount.innerHTML = openIssues.length; 
+      issueCount.innerHTML = openIssues.length;
       displayIssues(openIssues);
       manageSpinner(false);
     })
@@ -152,7 +156,9 @@ closeBtn.addEventListener("click", () => {
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
-      const closedIssues = json.data.filter((issue) => issue.status === "closed");
+      const closedIssues = json.data.filter(
+        (issue) => issue.status === "closed",
+      );
       issueCount.innerHTML = closedIssues.length;
       displayIssues(closedIssues);
       manageSpinner(false);
@@ -227,7 +233,7 @@ const displayIssueDetails = (issue) => {
   };
 
   const statusBadgeClass =
-    issue.status === "open" ? "badge-success" : "badge-error";
+    issue.status === "open" ?  "badge-primary" : "badge-success";
 
   detailsBox.innerHTML = `
     <div class="text-2xl font-bold mb-2">
@@ -284,7 +290,7 @@ document.getElementById("btn-search").addEventListener("click", () => {
     .then((data) => {
       const allWords = data.data;
       const filterWords = allWords.filter((issue) =>
-        issue.title.toLowerCase().includes(searchValue)
+        issue.title.toLowerCase().includes(searchValue),
       );
 
       displayIssues(filterWords);
